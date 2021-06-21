@@ -50,13 +50,17 @@ def start_checking():
                 break
             if("http" not in urls[i]):
                 continue
-            video_id = urls[i][32:43]
+            if("watch" in urls[i]):
+                video_id = urls[i][32:43]
+            else:
+                video_id = urls[i].split("/")[3][:11]
+            print(video_id)
             responses = YouTubeTranscriptApi.get_transcript(
                         video_id, languages=['en'])
             file = open(video_id+".txt","w",encoding="utf-8")
             print("writing file for: "+urls[i])
             for i in range(0, len(responses)):
-                file.write(responses[i]["text"]+"\n")
+                file.write(responses[i]["text"]+" ")
             file.close()
         except:
             print("Error here : "+urls[i])
